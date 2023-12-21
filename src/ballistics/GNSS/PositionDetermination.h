@@ -76,7 +76,7 @@ namespace Ballistics::GNSS
     }
 
     template<integer numberOfSatellites>
-    [[nodiscard]] determinedParameters determinePosition(const std::vector<externalParameters>& externalData,
+    [[nodiscard]] std::pair<determinedParameters, matrix<scalar, 4, 4>> determinePosition(const std::vector<externalParameters>& externalData,
                                                          const determinedParameters& initialApproximation,
                                                          const diagMatrix<scalar, numberOfSatellites, numberOfSatellites> P,
                                                          const scalar tolerance) noexcept {
@@ -145,8 +145,7 @@ namespace Ballistics::GNSS
             std::cout << "Covariance matrix:" << std::endl << covarianceMatrix << std::endl;
             numberOfIterations++;
         }
-
-        return toStruct(x);
+        return std::make_pair(toStruct(x), covarianceMatrix);
     }
 }
 
